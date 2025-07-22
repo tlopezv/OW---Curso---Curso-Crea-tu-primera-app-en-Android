@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.udemy.cursokotlin.miprimeraapp.TaskApplication.Companion.prefs
 
 class MainActivity : AppCompatActivity() {
 
@@ -64,10 +65,14 @@ class MainActivity : AppCompatActivity() {
         adapter.notifyDataSetChanged()
         // Limpiamos el campo de edición
         etTask.setText("")
+        // Guardamos el nuevo listado a las preferencias
+        prefs.saveTasks(tasks)
     }
 
     // Configura el "RecyclerView" para añadirle el "Adapter"
     private fun initRecyclerView(){
+        // Lo primero vamos a ir a las prferencias para ver si tenía tareas ya guardadas
+        tasks = prefs.getTasks()
         // añadimos un "LayoutManager" al "RecyclerView"
         // Un "LayoutManager" es el encargado de mostrar como se van a ver las vistas
         // Utilizamos un "Layout" que muestre una lista de componentes vertical
@@ -83,6 +88,8 @@ class MainActivity : AppCompatActivity() {
     private fun deleteTask(position:Int){
         tasks.removeAt(position)
         adapter.notifyDataSetChanged()
+        // Guardamos el nuevo listado a las preferencias
+        prefs.saveTasks(tasks)
     }
 
     var name:String? = null
